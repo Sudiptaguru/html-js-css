@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar Tabs</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            background-color: #333;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-item {
+            color: white;
+            padding: 14px 20px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .nav-item:hover {
+            background-color: #575757;
+        }
+
+        .content {
+            padding: 100px 20px;
+            margin-top: 50px; /* Adjust based on navbar height */
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <span class="nav-item" data-target="#content1">Item 1</span>
+        <span class="nav-item" data-target="#content2">Item 2</span>
+        <span class="nav-item" data-target="#content3">Item 3</span>
+    </div>
+
+    <div id="content1" class="content">
+        <h2>Content for Item 1</h2>
+        <p>This is the content for item 1. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet sagittis purus, eget sagittis ex. Phasellus vestibulum, urna at scelerisque faucibus, nunc felis convallis ligula, eget posuere sapien dui vel erat.</p>
+    </div>
+    <div id="content2" class="content">
+        <h2>Content for Item 2</h2>
+        <p>This is the content for item 2. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet sagittis purus, eget sagittis ex. Phasellus vestibulum, urna at scelerisque faucibus, nunc felis convallis ligula, eget posuere sapien dui vel erat.</p>
+    </div>
+    <div id="content3" class="content">
+        <h2>Content for Item 3</h2>
+        <p>This is the content for item 3. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet sagittis purus, eget sagittis ex. Phasellus vestibulum, urna at scelerisque faucibus, nunc felis convallis ligula, eget posuere sapien dui vel erat.</p>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('.nav-item').click(function() {
+                var target = $(this).data('target');
+                $('html, body').animate({
+                    scrollTop: $(target).offset().top - $('.navbar').outerHeight()
+                }, 1000);
+            });
+        });
+    </script>
+</body>
+</html>
