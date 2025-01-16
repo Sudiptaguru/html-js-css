@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Falling Leaves</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* Container for the falling leaves */
+        .scene {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Leaf styling using an image */
+        .leaf {
+            width: 50px; /* Set width as per image size */
+            height: 70px; /* Set height as per image size */
+            background-size: cover;
+            position: absolute;
+            top: -100px; /* Start above the screen */
+            opacity: 0.8; /* Slight transparency */
+            animation: fall linear, sway ease-in-out infinite;
+        }
+
+        /* Falling animation */
+        @keyframes fall {
+            0% {
+                top: -100px; /* Start above the screen */
+            }
+            100% {
+                top: 110vh; /* Move below the screen */
+            }
+        }
+
+        /* Swaying animation */
+        @keyframes sway {
+            0%, 100% {
+                transform: translateX(0) rotate(0deg); /* Neutral position */
+            }
+            50% {
+                transform: translateX(20px) rotate(15deg); /* Sway to one side */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="scene"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // List of multiple leaf image paths
+            const leafImages = [
+                'image/leaf.jpg', // First leaf type
+                'image/autumn-leaf-22014191.webp',
+            ];
+
+            // Get the number of reloads from localStorage
+            let reloadCount = localStorage.getItem("reloadCount");
+            if (!reloadCount) {
+                reloadCount = 0; // Initialize if not set
+            }
+
+            // Limit to 3 reloads
+            if (reloadCount < 3) {
+                // Increment the reload count and store in localStorage
+                reloadCount++;
+                localStorage.setItem("reloadCount", reloadCount);
+
+                const scene = document.querySelector(".scene");
+                const leafCount = 5; // Adjust the number of leaves
+
+                for (let i = 0; i < leafCount; i++) {
+                    const leaf = document.createElement("div");
+                    leaf.classList.add("leaf");
+
+                    // Randomly select a leaf image from the array
+                    const randomLeafImage = leafImages[Math.floor(Math.random() * leafImages.length)];
+                    leaf.style.backgroundImage = `url('${randomLeafImage}')`;
+
+                    // Randomize position, animation duration, and delay
+                    const randomX = Math.random() * 100; // Horizontal position (0% to 100%)
+                    const randomDuration = Math.random() * 5 + 5; // Fall duration (5s to 10s)
+                    const randomDelay = Math.random() * 5; // Animation delay (0s to 5s)
+
+                    // Apply styles
+                    leaf.style.left = `${randomX}%`; // Horizontal position
+                    leaf.style.animationDuration = `${randomDuration}s, ${randomDuration / 2}s`; // Fall and sway durations
+                    leaf.style.animationDelay = `${randomDelay}s, ${randomDelay}s`; // Delay for both animations
+
+                    // Add leaf to the scene
+                    scene.appendChild(leaf);
+
+                    // Remove the leaf after animation ends and add a new one
+                    setTimeout(() => {
+                        leaf.remove();
+                    }, (randomDuration + randomDelay) * 1000);
+                    
+                    // Add new leaf after current one disappears
+                    setTimeout(() => {
+                        const newLeaf = document.createElement("div");
+                        newLeaf.classList.add("leaf");
+
+                        // Randomly select a leaf image for the new leaf
+                        const newRandomLeafImage = leafImages[Math.floor(Math.random() * leafImages.length)];
+                        newLeaf.style.backgroundImage = `url('${newRandomLeafImage}')`;
+
+                        newLeaf.style.left = `${Math.random() * 100}%`;
+                        newLeaf.style.animationDuration = `${Math.random() * 5 + 5}s, ${Math.random() * 2 + 3}s`;
+                        newLeaf.style.animationDelay = `${Math.random() * 5}s, ${Math.random() * 5}s`;
+                        scene.appendChild(newLeaf);
+                    }, (randomDuration + randomDelay) * 1000);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

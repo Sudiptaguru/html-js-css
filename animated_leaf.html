@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Falling Leaves</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+/*            background: linear-gradient(to bottom, #FF9800, #FFC107);*/
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* Container for the falling leaves */
+        .scene {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Leaf styling */
+        .leaf {
+            width: 50px;
+            height: 70px;
+            background: linear-gradient(45deg, #4CAF50, #388E3C); /* Green gradient for leaf */
+            clip-path: polygon(50% 0%, 100% 100%, 0% 100%); /* Triangular leaf shape */
+            position: absolute;
+            top: -100px; /* Start above the screen */
+            opacity: 0.8; /* Slight transparency */
+            animation: fall linear infinite, sway ease-in-out infinite;
+        }
+
+        /* Falling animation */
+        @keyframes fall {
+            0% {
+                top: -100px; /* Start above the screen */
+            }
+            100% {
+                top: 110vh; /* Move below the screen */
+            }
+        }
+
+        /* Swaying animation */
+        @keyframes sway {
+            0%, 100% {
+                transform: translateX(0) rotate(0deg); /* Neutral position */
+            }
+            50% {
+                transform: translateX(20px) rotate(15deg); /* Sway to one side */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="scene"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const scene = document.querySelector(".scene");
+            const leafCount = 5; // Adjust the number of leaves
+
+            for (let i = 0; i < leafCount; i++) {
+                const leaf = document.createElement("div");
+                leaf.classList.add("leaf");
+
+                // Randomize position, animation duration, and delay
+                const randomX = Math.random() * 100; // Horizontal position (0% to 100%)
+                const randomDuration = Math.random() * 5 + 5; // Fall duration (5s to 10s)
+                const randomDelay = Math.random() * 5; // Animation delay (0s to 5s)
+                const randomSway = Math.random() * 20 + 10; // Sway distance (10px to 30px)
+
+                // Apply styles
+                leaf.style.left = `${randomX}%`; // Horizontal position
+                leaf.style.animationDuration = `${randomDuration}s, ${randomDuration / 2}s`; // Fall and sway durations
+                leaf.style.animationDelay = `${randomDelay}s, ${randomDelay}s`; // Delay for both animations
+
+                // Add leaf to the scene
+                scene.appendChild(leaf);
+
+                // Remove the leaf after animation ends and add a new one
+                setTimeout(() => {
+                    leaf.remove();
+                    const newLeaf = document.createElement("div");
+                    newLeaf.classList.add("leaf");
+                    newLeaf.style.left = `${Math.random() * 100}%`;
+                    newLeaf.style.animationDuration = `${Math.random() * 5 + 5}s, ${Math.random() * 2 + 3}s`;
+                    newLeaf.style.animationDelay = `${Math.random() * 5}s, ${Math.random() * 5}s`;
+                    scene.appendChild(newLeaf);
+                }, (randomDuration + randomDelay) * 1000);
+            }
+        });
+    </script>
+</body>
+</html>
